@@ -5,8 +5,13 @@ Dillon Bastan, 2020
 
 /*Main*/
 
+body {
+	background-color: #222222;
+}
+
 .mainContent {
 	pointer-events:none;
+	font-family: arial;
    	text-align: center;
    	vertical-align: middle;
    	font-size: 500%;
