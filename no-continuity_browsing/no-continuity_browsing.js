@@ -22,7 +22,10 @@ var googleKeys = [
 	"AIzaSyC0hGac9MMuc9LVk7RiS0v25wGXjC_6WhI",
 	"AIzaSyDYqjtYkQCgvKd4_l2SaWxNniMc4Fvgg0M",
 	"AIzaSyAu37acQ7kgPxdpY1qa8pyl-2qhEfPF68s",
-	"AIzaSyBi-DOXv_FR25hxX_aSiVJ2wq_68Lns4Gw"
+	"AIzaSyBi-DOXv_FR25hxX_aSiVJ2wq_68Lns4Gw",
+	"AIzaSyD_wIIf7tPDgxKmg9xsw-Afz_8DTCMWUXc",
+	"AIzaSyByrfZcRMQVvZI-sBJXpKO-YQlkxHcSPFM",
+	"AIzaSyCMZub5tDglrt9iARZoNmE_vTG_w7Ixbgg"
 ];
 var googleKey = googleKeys[0];
 var googleKeyIndex = 0;
@@ -39,8 +42,8 @@ var delayTime;
 var nchoices;
 var mediaType;
 var functions;
-var delayTimeMin = 1000;
-var delayTimeMax = 20000;
+var delayTimeMin = 2000;
+var delayTimeMax = 60000;
 var alphabet = [
 	'a','b','c','d','e','f','g','h',
 	'i','j','k','l','m','n','o','p',
@@ -61,14 +64,16 @@ function init() {
 }
 
 //
-$(document).ready( function() {});
+$(document).ready( function() {
+	alert("Welcome to No-Continuity Browsing! Enable audio for the full experience");
+});
 
 
 //
 function newContent() {
-	delayTime = delayTimeMin + Math.round( Math.random()*delayTimeMax);
+	delayTime = delayTimeMin + Math.round( Math.pow(Math.random(),3)*delayTimeMax);
 	choice = Math.min( Math.floor( Math.random()*nchoices ), nchoices-1 );
-	choice = 0;
+	//choice = 0;
 	console.log("Choice Index:", choice);
 	//
 	mediatype = "";
@@ -258,7 +263,7 @@ function getWebPage() {
 	var url = searchResults.link;
 	url.replace("watch?v=", "embed/");
 	//
-	var element = "<iframe id=\"content\" onload=\"chkFrame(this)\" src=\"" + url + "\"style=\"border:none;\"></iframe>"
+	var element = "<iframe id=\"content\" onload=\"chkFrame(this)\" src=\"" + url + "\"style=\"border:none;\"></iframe>";
 	updateContent(element);
 }
 
@@ -280,8 +285,9 @@ function getVideo() {
 		getKeyword();
 		return;
 	}
-	var url = searchResults.id.videoId;
-	var element = "<iframe id=\"content\" src=\"https://www.youtube.com/embed/"+url+"?autoplay=1&showinfo=0&controls=0\" allow=\"autoplay\" modestbranding=1></iframe>";
+	var videoUrl = searchResults.id.videoId;
+	//
+	var element = "<iframe id=\"content\" src=\"https://www.youtube.com/embed/"+videoUrl+"?autoplay=1&showinfo=0&controls=0\" allow=\"autoplay\" modestbranding=1></iframe>";
 	updateContent(element);
 }
 
@@ -318,7 +324,8 @@ function getAudio() {
 				return;
 		  	}
 		  	//
-			var element = "<audio id=\"content\" style=\"position:fixed; top:-100px;\" onerror=\"loadError(this);\" controls autoplay> <source onerror=\"loadError(this);\" src=\""+url+"\" type=\"audio/mpeg\"> </audio>";
+			var element = "<audio allow=\"autoplay\"  id=\"content\"  onerror=\"loadError(this);\" controls autoplay> <source onerror=\"loadError(this);\" src=\""+url+"\" type=\"audio/mpeg\"> </audio>";
+			//style=\"position:fixed; top:-100px;\"
 			updateContent(element);
 		  });
 	}();
@@ -327,7 +334,8 @@ function getAudio() {
 
 //
 function chkFrame(fr) {
-	console.log($(fr).contents().src, fr);
+	//
+	//console.log(fr);
 	if (false) {
 		console.log("FAILEDLOAD!!!!!!***********");
 		clearTimeout(delay);
@@ -369,3 +377,35 @@ function nextKey(keytype) {
 	getKeyword();
 }
 
+
+
+
+
+
+
+//Specify speed of scroll. Larger=faster (ie: 5)
+var scrollspeed=cache=1
+
+//Specify intial delay before scroller starts scrolling (in miliseconds):
+var initialdelay=3000
+
+function initializeScroller(){
+	dataobj=document.all? document.all.datacontainer : document.getElementById("content")
+	dataobj.style.top="5px"
+	setTimeout("getdataheight()", initialdelay)
+}
+
+function getdataheight(){
+	thelength=dataobj.offsetHeight
+	if (thelength==0)
+	setTimeout("getdataheight()",10)
+	else
+	scrollDiv()
+}
+
+function scrollDiv(){
+	dataobj.style.top=parseInt(dataobj.style.top)-scrollspeed+"px"
+	if (parseInt(dataobj.style.top)<thelength*(-1))
+	dataobj.style.top="5px"
+	setTimeout("scrollDiv()",40)
+}

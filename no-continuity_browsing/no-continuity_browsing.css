@@ -10,7 +10,6 @@ body {
 }
 
 .mainContent {
-	pointer-events:none;
 	font-family: arial;
    	text-align: center;
    	vertical-align: middle;
