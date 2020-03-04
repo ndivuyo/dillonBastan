@@ -73,7 +73,6 @@ $(document).ready( function() {
 function newContent() {
 	delayTime = delayTimeMin + Math.round( Math.pow(Math.random(),3)*delayTimeMax);
 	choice = Math.min( Math.floor( Math.random()*nchoices ), nchoices-1 );
-	//choice = 0;
 	console.log("Choice Index:", choice);
 	//
 	mediatype = "";
@@ -261,7 +260,8 @@ function getWebPage() {
 		return;
 	}
 	var url = searchResults.link;
-	url.replace("watch?v=", "embed/");
+	url = url.replace("watch?v=", "embed/");
+	url = url.replace("http:", "https:");
 	//
 	var element = "<iframe id=\"content\" onload=\"chkFrame(this)\" src=\"" + url + "\"style=\"border:none;\"></iframe>";
 	updateContent(element);
