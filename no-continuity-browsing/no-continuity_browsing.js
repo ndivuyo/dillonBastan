@@ -301,33 +301,39 @@ function getAudio() {
 	// Query the list of files and choose one
 	!async function(){
 		await fetch("https://archive.org/metadata/"+searchResults.identifier+"/files")
-		  .then((response) => {
-		    return response.json();
-		  })
-		  .then((data) => {
-		  	if (!data.result) {
-		  		getKeyword();
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				if (!data.result) {
+					getKeyword();
 				return;
-		  	}
-		  	//
-		  	var url = "";
-		  	var found = false;
-		  	for (var i = 0; i < data.result.length; i++) {
-		  		if (data.result[i].format === "VBR MP3") {
-		  			url = "https://archive.org/download/"+searchResults.identifier+"/"+data.result[i].name;
-		  			found = true;
-		  			break;
-		  		}
-		  	}
-		  	if (!found) {
-		  		getKeyword();
+				}
+				//
+				console.log(data);
+				//
+				var url = "";
+				var found = false;
+				for (var i = 0; i < data.result.length; i++) {
+					if (data.result[i].format === "VBR MP3") {
+						url = "https://archive.org/download/"+searchResults.identifier+"/"+data.result[i].name;
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					getKeyword();
 				return;
-		  	}
-		  	//
-			var element = "<audio allow=\"autoplay\"  id=\"content\"  onerror=\"loadError(this);\" controls autoplay> <source onerror=\"loadError(this);\" src=\""+url+"\" type=\"audio/mpeg\"> </audio>";
-			//style=\"position:fixed; top:-100px;\"
-			updateContent(element);
-		  });
+				}
+				//
+				var element = "<audio allow=\"autoplay\"  id=\"content\"  onerror=\"loadError(this);\" controls autoplay> <source onerror=\"loadError(this);\" src=\""+url+"\" type=\"audio/mpeg\"> </audio>";
+				//style=\"position:fixed; top:-100px;\"
+				updateContent(element);
+			})
+			.catch((error) => {
+				console.log("ERRROROR", error);
+				loadError(error);
+			});
 	}();
 }
 
