@@ -300,7 +300,7 @@ function getAudio() {
 	}
 	// Query the list of files and choose one
 	!async function(){
-		await fetch("http://archive.org/metadata/"+searchResults.identifier+"/files")
+		await fetch("https://archive.org/metadata/"+searchResults.identifier+"/files")
 		  .then((response) => {
 		    return response.json();
 		  })
@@ -314,7 +314,7 @@ function getAudio() {
 		  	var found = false;
 		  	for (var i = 0; i < data.result.length; i++) {
 		  		if (data.result[i].format === "VBR MP3") {
-		  			url = "http://archive.org/download/"+searchResults.identifier+"/"+data.result[i].name;
+		  			url = "https://archive.org/download/"+searchResults.identifier+"/"+data.result[i].name;
 		  			found = true;
 		  			break;
 		  		}
