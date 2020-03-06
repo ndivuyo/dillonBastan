@@ -33,6 +33,8 @@ var googleKeyIndex = 0;
 var googleSearchID = "008133755681676510243:6h0xi4ntsgi";
 var imageSearchID = "000119394994078803806:wyryaw2b7wt";
 //
+var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+//
 var delay;
 var nwords;
 var keyword;
@@ -65,7 +67,7 @@ function init() {
 
 //
 $(document).ready( function() {
-	alert("Welcome to No-Continuity Browsing! Enable audio for the full experience");
+	alert("Welcome to No-Continuity Browsing! Enable audio for the full experience. If the webpage stops changing for more than 2 minutes, you may have to refresh the page. Will improve this site over time.");
 });
 
 
@@ -153,8 +155,8 @@ function getSearchResult(search, type) {
 		request.execute(function(response) {
 			//
 			if (response.error && response.error.code === 403) {
-				console.log("youtube api key index", youtubeKeyIndex);
 				nextKey("youtube");
+				console.log("youtube api key index", youtubeKeyIndex);
 				return;
 			}
 			//
@@ -170,7 +172,7 @@ function getSearchResult(search, type) {
 	else if (type === "audio") {
 		search = "https://archive.org/advancedsearch.php?q="+search+"&fl[]=identifier,mediatype&mediatype=audio&output=json";
 		!async function(){
-			await fetch(search)
+			await fetch(proxyUrl + search)
 			  .then((response) => {
 			    return response.json();
 			  })
@@ -190,7 +192,7 @@ function getSearchResult(search, type) {
 		}
 		search = "https://www.googleapis.com/customsearch/v1?key="+googleKey+"&cx="+searchID+"&q="+search;
 		!async function(){
-			await fetch(search)
+			await fetch(proxyUrl + search)
 				.then((response) => {
 					return response.json();
 				})
@@ -263,7 +265,7 @@ function getWebPage() {
 	url = url.replace("watch?v=", "embed/");
 	url = url.replace("http:", "https:");
 	//
-	var element = "<iframe id=\"content\" onload=\"chkFrame(this)\" src=\"" + url + "\"style=\"border:none;\"></iframe>";
+	var element = "<iframe id=\"content\" onload=\"chkFrame(this)\" src=\"" + url + "\"style=\"border:none;\"><div id=\"fake\"></div></iframe>";
 	updateContent(element);
 }
 
@@ -298,9 +300,11 @@ function getAudio() {
 		getKeyword();
 		return;
 	}
+	//
+	var search = "https://archive.org/metadata/"+searchResults.identifier+"/files";
 	// Query the list of files and choose one
 	!async function(){
-		await fetch("https://archive.org/metadata/"+searchResults.identifier+"/files")
+		await fetch(proxyUrl + search)
 			.then((response) => {
 				return response.json();
 			})
@@ -309,8 +313,6 @@ function getAudio() {
 					getKeyword();
 				return;
 				}
-				//
-				console.log(data);
 				//
 				var url = "";
 				var found = false;
@@ -331,7 +333,6 @@ function getAudio() {
 				updateContent(element);
 			})
 			.catch((error) => {
-				console.log("ERRROROR", error);
 				loadError(error);
 			});
 	}();
@@ -341,7 +342,7 @@ function getAudio() {
 //
 function chkFrame(fr) {
 	//
-	//console.log(fr);
+	//console.log("CHECK:", fr, $(fr).html());
 	if (false) {
 		console.log("FAILEDLOAD!!!!!!***********");
 		clearTimeout(delay);
