@@ -67,7 +67,11 @@ function init() {
 
 //
 $(document).ready( function() {
-	alert("Welcome to No-Continuity Browsing! Enable audio for the full experience. If the webpage stops changing for more than 2 minutes, you may have to refresh the page. Will improve this site over time.");
+	alert(
+		"Welcome to No-Continuity Browsing! Enable audio for the full experience. \n\n
+		If the webpage stops changing for more than 2 minutes, you may have to refresh the page. \n\n
+		Will improve this site over time, adding more languages, search engines and smoother transitions."
+	);
 });
 
 
